@@ -31,4 +31,22 @@ generate_data <- function(N,
     return(list(x=x_i, nu=nu_i, H=H_i))
 }
 
-generate_data(1e4, c(0, 1), c(0,50,0.9,0.1))
+#' Covariance matrix generating function
+#'
+#' @params N A number of non nulls.
+#' @params rho A number of correlation coefficient.
+#' @params opt A string specify which type of dependence to use.
+#' @return Sigma A covariance matrix.
+#' @export
+#' @examples
+#' cor_mat(5, 0.9, 'ar1')
+cor_mat = function(N, 
+                   rho = 0, 
+                   opt = c("cs","ar1")
+                   ){
+    if (match.arg(opt)=='cs' ) {Sigma = matrix(rho, N, N); diag(Sigma) = 1}
+    if (match.arg(opt)=='ar1') {exponent = abs(matrix(1:N-1, N, N, byrow=T) - (1:N-1)); Sigma = rho^exponent}
+    return(Sigma)
+}
+
+
