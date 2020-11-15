@@ -5,8 +5,7 @@ f1 <- function(x, parm){ parm[3] * (abs(x-parm[1])<parm[2]) + parm[4]*(abs(x-par
 #' @params N A number of total observations.
 #' @params nu A vector of length 2.
 #' @params f A integer specify which type of function to use.
-#' @return A numeric vector giving number of characters (code points) in each
-#'    element of the character vector. Missing string have missing length.
+#' @return A list of x, nu and H
 #' @export
 #' @examples
 #' generate_data(1e4, c(0, 1), c(0,50,0.9,0.1))
