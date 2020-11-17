@@ -22,7 +22,7 @@ generate_data <- function(N,
     f_pi_1 <-f1
     
     pi_1 <- f_pi_1(x_i, parm = f_param)
-    cat(pi_1)
+
     H_i <- rbinom(N, 1, pi_1)
     
     nu_i <- rep(nu[1], N)

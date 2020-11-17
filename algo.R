@@ -41,7 +41,7 @@ summary_storey <- function(pvals, H, thr = 0.5,
 }
 
 ## AdaPT 
-summary_adapt <- function(adapt, H, pvals){
+summary_adapt <- function(adapt, pvals, H){
     results <- apply(adapt$s, 2, function(s){
         tmp <- (pvals <= s)
         nfrej <- sum(tmp[!H], na.rm = TRUE)
