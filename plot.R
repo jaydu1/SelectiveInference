@@ -1,5 +1,5 @@
 plot_s_curve <- function(obj, x, pvals,
-                           alpha,
+                           alpha, alpha_BH, alpha_stoery,
                            xlab = "x", xlim = NULL,
                            disp_ymax = 0.2,
                            num_yticks = 3,
@@ -56,5 +56,7 @@ plot_s_curve <- function(obj, x, pvals,
     }
     points(x, pvals, pch = ".",
            col = c("red", "blue", "black")[what_type])
+    abline(a=NULL, b=NULL, h=alpha_BH, v=NULL, col="blue")
+    abline(a=NULL, b=NULL, h=alpha_stoery, v=NULL, col="green")
     box()
 }

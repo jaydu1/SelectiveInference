@@ -7,14 +7,14 @@ summary_BH <- function(pvals, H,
         alpha <- alpha * khat / n
         nfrej <- sum(pvals[H==0] < alpha, na.rm = TRUE)
         ntrej <- sum(pvals[H==1] < alpha, na.rm = TRUE)
-        return(c(nfrej, ntrej))
+        return(c(alpha, nfrej, ntrej))
     })
-    nfrej <- as.numeric(results[1, ])
-    ntrej <- as.numeric(results[2, ])
+    nfrej <- as.numeric(results[2, ])
+    ntrej <- as.numeric(results[3, ])
     nrej <- nfrej + ntrej
     FDP <- nfrej / pmax(nrej, 1)
     power <- ntrej / max(sum(H), 1)
-    df <- data.frame(nrej = nrej, FDP = FDP, power = power)
+    df <- data.frame(alpha = as.numeric(results[1, ]), nrej = nrej, FDP = FDP, power = power)
     return(df)
 }
 
@@ -29,14 +29,14 @@ summary_storey <- function(pvals, H, thr = 0.5,
         alpha <- alpha * khat / n
         nfrej <- sum(pvals[H==0] < alpha, na.rm = TRUE)
         ntrej <- sum(pvals[H==1] < alpha, na.rm = TRUE)
-        return(c(nfrej, ntrej))        
+        return(c(alpha, nfrej, ntrej))        
     })
-    nfrej <- as.numeric(results[1, ])
-    ntrej <- as.numeric(results[2, ])
+    nfrej <- as.numeric(results[2, ])
+    ntrej <- as.numeric(results[3, ])
     nrej <- nfrej + ntrej
     FDP <- nfrej / pmax(nrej, 1)
     power <- ntrej / max(sum(H), 1)
-    df <- data.frame(nrej = nrej, FDP = FDP, power = power)
+    df <- data.frame(alpha = as.numeric(results[1, ]), nrej = nrej, FDP = FDP, power = power)
     return(df)
 }
 

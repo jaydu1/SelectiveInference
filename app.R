@@ -22,7 +22,7 @@ ui <- fluidPage(
                       sliderInput("f_param4", "f_param4", min = 0.0, max = 1.0, value = 0.1),
                       sliderInput("rho", "rho:", min = 0, max = 1, value = 0),
                       selectInput("opt", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
-                      sliderInput("alpha", "alpha:", min = 0.01, max = 0.30, value = 0.01)
+                      sliderInput("alpha", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
                   ),
                   
                   # Main panel for displaying outputs ----
@@ -52,17 +52,20 @@ server <- function(input, output) {
         data$pvals <- 1 - pnorm(data$z)
         
         # run algorithms
-        df_BH <- summary_BH(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
-        df_storey <- summary_storey(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
+        alphas <- seq(0.01, 0.3, 0.01)
+        df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
+        df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
         
         formulas <- paste0("ns(x, df = ", 6:7, ")")
         adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
-                           mu_formulas = formulas,  nfits = 10, alphas = seq(0.01, 0.3, 0.01),
+                           mu_formulas = formulas,  nfits = 10, alphas = alphas,
                            verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
         df_adapt <- summary_adapt(adapt, data$pvals, data$H)
         
         # plot
-        plot_s_curve(adapt, data$x, data$pvals, input$alpha)
+        cat(input$alpha)
+        plot_s_curve(adapt, data$x, data$pvals, input$alpha,
+                     df_BH[alphas-input$alpha<1e-12,'alpha'], df_storey[alphas-input$alpha<1e-12,'alpha'])
     })
     
 }
