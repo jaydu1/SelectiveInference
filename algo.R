@@ -44,8 +44,8 @@ summary_storey <- function(pvals, H, thr = 0.5,
 summary_adapt <- function(adapt, pvals, H){
     results <- apply(adapt$s, 2, function(s){
         tmp <- (pvals <= s)
-        nfrej <- sum(tmp[!H], na.rm = TRUE)
-        ntrej <- sum(tmp[H], na.rm = TRUE)
+        nfrej <- sum(tmp[H==0], na.rm = TRUE)
+        ntrej <- sum(tmp[H==1], na.rm = TRUE)
         return(c(nfrej, ntrej))
     })
     nfrej <- as.numeric(results[1, ])

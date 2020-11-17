@@ -14,7 +14,7 @@ Cov <- cor_mat(sum(data$H==1), 0.1, 'ar1')
 
 # generate p value
 data$z <- rnorm(N, data$nu)
-data$z[which(data$H==1)] <- mvrnorm(1, data$nu[which(data$H==1)], Cov)
+data$z[data$H==1] <- mvrnorm(1, data$nu[data$H==1], Cov)
 data$pvals <- 1 - pnorm(data$z)
 
 # run algorithms
