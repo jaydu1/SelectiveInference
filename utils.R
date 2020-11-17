@@ -13,7 +13,7 @@ generate_data <- function(N,
                           nu,
                           f_param # need to check for validity
 ){
-    x_i <- seq(-100, 100, length.out = N)
+    x_i <- seq(-50, 50, length.out = N)
     
     # To Do: add more types of functions
     # f_pi_1 <- partial(
