@@ -19,7 +19,7 @@ generate_data <- function(N,
     # f_pi_1 <- partial(
     #     switch(f, f1, f2), 
     #     parm = f_param)
-    f_pi_1 <-f1
+    f_pi_1 <- f1
     
     pi_1 <- f_pi_1(x_i, parm = f_param)
 

@@ -5,8 +5,8 @@ summary_BH <- function(pvals, H,
     results <- sapply(alphas, function(alpha){
         khat <- max(c(0, which(sort(pvals) <= alpha * (1:n) / n)))
         alpha <- alpha * khat / n
-        nfrej <- sum(pvals[!H] < alpha, na.rm = TRUE)
-        ntrej <- sum(pvals[H] < alpha, na.rm = TRUE)
+        nfrej <- sum(pvals[H==0] < alpha, na.rm = TRUE)
+        ntrej <- sum(pvals[H==1] < alpha, na.rm = TRUE)
         return(c(nfrej, ntrej))
     })
     nfrej <- as.numeric(results[1, ])
@@ -27,8 +27,8 @@ summary_storey <- function(pvals, H, thr = 0.5,
     results <- sapply(alphas, function(alpha){
         khat <- max(c(0, which(sort(pvals) <= alpha / pi0 * (1:n) / n)))
         alpha <- alpha * khat / n
-        nfrej <- sum(pvals[!H] < alpha, na.rm = TRUE)
-        ntrej <- sum(pvals[H] < alpha, na.rm = TRUE)
+        nfrej <- sum(pvals[H==0] < alpha, na.rm = TRUE)
+        ntrej <- sum(pvals[H==1] < alpha, na.rm = TRUE)
         return(c(nfrej, ntrej))        
     })
     nfrej <- as.numeric(results[1, ])
