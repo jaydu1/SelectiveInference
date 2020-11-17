@@ -1,4 +1,3 @@
-
 library("adaptMT")
 library("splines")
 library(MASS)
@@ -7,13 +6,10 @@ source("algo.R")
 source("plot.R")
 library(shiny)
 
-# Define UI for app that draws a histogram ----
+# Define UI for app
 ui <- fluidPage(
-    
-    # App title ----
     titlePanel(em("AdaPT Simulations")),
     
-    # Sidebar layout with input and output definitions ----
     sidebarLayout(position = 'left',
                   
                   # Sidebar panel for inputs ----
@@ -24,7 +20,7 @@ ui <- fluidPage(
                       numericInput("f_param1", "f_param1", value=2), numericInput("f_param2", "f_param2", value=2), 
                       sliderInput("f_param3", "f_param3", min = 0.0, max = 1.0, value = 0.9), 
                       sliderInput("f_param4", "f_param4", min = 0.0, max = 1.0, value = 0.1),
-                      sliderInput("rho", "mean:", min = 0, max = 1, value = 0),
+                      sliderInput("rho", "rho:", min = 0, max = 1, value = 0),
                       selectInput("opt", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
                       sliderInput("alpha", "alpha:", min = 0.01, max = 0.30, value = 0.01)
                   ),
@@ -32,7 +28,7 @@ ui <- fluidPage(
                   # Main panel for displaying outputs ----
                   mainPanel(
                       textOutput("selected"),
-                      plotOutput("hist")
+                      plotOutput("p1")
                   )
     )
 )
@@ -41,13 +37,13 @@ ui <- fluidPage(
 server <- function(input, output) {
     
     output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
-    output$hist <- renderPlot({ 
+    output$p1 <- renderPlot({ 
         # generate data
         data <- generate_data(input$N, c(0, input$nu1), 
                               c(input$f_param1, input$f_param2, input$f_param3, input$f_param4))
         
         # create dependence
-        Cov <- cor_mat(sum(data$H==1), 0.1, 'ar1')
+        Cov <- cor_mat(sum(data$H==1), opt$rho, input$opt)
         
         # generate p value
         data$z <- rnorm(input$N, data$nu)
