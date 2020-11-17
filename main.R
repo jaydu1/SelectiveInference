@@ -18,13 +18,12 @@ data$z[which(data$H==1)] <- mvrnorm(1, data$nu[which(data$H==1)], Cov)
 data$pvals <- 1 - pnorm(data$z)
 
 # run algorithms
-summary_BH(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
-summary_storey(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
-
+df_BH <- summary_BH(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
+df_storey <- summary_storey(data$pvals, data$H, alphas = seq(0.01, 0.3, 0.01))
 
 formulas <- paste0("ns(x, df = ", 6:7, ")")
 adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
                  mu_formulas = formulas,  nfits = 10, alphas = seq(0.01, 0.3, 0.01))
-summary_adapt(adapt, data$pvals, data$H)
+df_adapt <- summary_adapt(adapt, data$pvals, data$H)
 
 # plot
