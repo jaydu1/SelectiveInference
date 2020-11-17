@@ -57,7 +57,8 @@ server <- function(input, output) {
         
         formulas <- paste0("ns(x, df = ", 6:7, ")")
         adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
-                           mu_formulas = formulas,  nfits = 10, alphas = seq(0.01, 0.3, 0.01))
+                           mu_formulas = formulas,  nfits = 10, alphas = seq(0.01, 0.3, 0.01),
+                           verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
         df_adapt <- summary_adapt(adapt, data$pvals, data$H)
         
         # plot
