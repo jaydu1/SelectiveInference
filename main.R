@@ -7,7 +7,7 @@ source("algo.R")
 N <- 1e3
 
 # generate data
-data <- generate_data(N, c(0, 1), c(0, 10, 0.9, 0.1))
+data <- generate_data(N, c(0, 2), c(0, 10, 0.9, 0.1))
 
 # create dependence
 Cov <- cor_mat(sum(data$H==1), 0.1, 'ar1')
