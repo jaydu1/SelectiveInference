@@ -36,14 +36,15 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
     
-    output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
+    # output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
     output$p1 <- renderPlot({ 
         # generate data
         data <- generate_data(input$N, c(0, input$nu1), 
                               c(input$f_param1, input$f_param2, input$f_param3, input$f_param4))
         
         # create dependence
-        Cov <- cor_mat(sum(data$H==1), opt$rho, input$opt)
+        
+        Cov <- cor_mat(sum(data$H==1), input$rho, input$opt)
         
         # generate p value
         data$z <- rnorm(input$N, data$nu)
