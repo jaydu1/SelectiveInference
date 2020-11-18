@@ -66,18 +66,18 @@ plot_s_curve <- function(obj, x, pvals,
 
 plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
     par(...)
-    df_res_power <- data.frame(alpha=alphas, BH=df_BH$power, 
-                               Storey=df_storey$power, AdaPT=df_adapt$power)
+    df_res_power <- data.frame(alpha=alphas, AdaPT=df_adapt$power,
+                               Storey=df_storey$power, BH=df_BH$power)
     df_res_power <- melt(df_res_power, id.vars=c("alpha"), variable.name='method', value.name="value")
     df_res_power$group <- 'Power'
     
-    df_res_FDP <- data.frame(alpha=alphas, BH=df_BH$FDP, 
-                               Storey=df_storey$FDP, AdaPT=df_adapt$FDP)
+    df_res_FDP <- data.frame(alpha=alphas, AdaPT=df_adapt$FDP, 
+                               Storey=df_storey$FDP, BH=df_BH$FDP)
     df_res_FDP <- melt(df_res_FDP, id.vars=c("alpha"), variable.name='method', value.name="value")
     df_res_FDP$group <- 'FDP'
     
     df_res <- rbind(df_res_power, df_res_FDP)
-    
+    # df_res$method <- factor(df_res$method, levels=c("AdaPT", "Stoery", "BH"))
     ggplot(data=df_res, aes(x=alpha, y=value, group=interaction(method, group), color=method, linetype=group)) + 
         geom_line() + 
         scale_y_continuous(
