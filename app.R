@@ -28,22 +28,20 @@ ui <- fluidPage(
                   # Main panel for displaying outputs ----
                   mainPanel(
                       textOutput("selected"),
-                      plotOutput("p1")
+                      plotOutput("p1"),
+                      plotOutput("p2")
                   )
     )
 )
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-    
-    # output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
-    output$p1 <- renderPlot({ 
+    dataInput <- reactive({
         # generate data
         data <- generate_data(input$N, c(0, input$nu1), 
                               c(input$f_param1, input$f_param2, input$f_param3, input$f_param4))
         
         # create dependence
-        
         Cov <- cor_mat(sum(data$H==1), input$rho, input$opt)
         
         # generate p value
@@ -61,11 +59,17 @@ server <- function(input, output) {
                            mu_formulas = formulas,  nfits = 10, alphas = alphas,
                            verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
         df_adapt <- summary_adapt(adapt, data$pvals, data$H)
-        
-        # plot
-        cat(input$alpha)
+    })
+    
+    
+    # output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
+    output$p1 <- renderPlot({ 
         plot_s_curve(adapt, data$x, data$pvals, input$alpha,
                      df_BH[alphas-input$alpha<1e-12,'alpha'], df_storey[alphas-input$alpha<1e-12,'alpha'])
+    })
+    
+    output$p2 <- renderPlot({
+        plot_power(alphas, df_BH, df_storey, df_adapt)
     })
     
 }

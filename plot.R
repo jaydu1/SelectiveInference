@@ -1,7 +1,10 @@
+library(ggplot2)
+library(reshape2)
+
 plot_s_curve <- function(obj, x, pvals,
                            alpha, alpha_BH, alpha_stoery,
                            xlab = "x", xlim = NULL,
-                           disp_ymax = 0.2,
+                           disp_ymax = 0.3,
                            num_yticks = 3,
                            rand_seed_perturb = NA,
                            ...){
@@ -59,4 +62,35 @@ plot_s_curve <- function(obj, x, pvals,
     abline(a=NULL, b=NULL, h=alpha_BH, v=NULL, col="blue")
     abline(a=NULL, b=NULL, h=alpha_stoery, v=NULL, col="green")
     box()
+}
+
+plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
+    par(...)
+    df_res_power <- data.frame(alpha=alphas, BH=df_BH$power, 
+                               Storey=df_storey$power, AdaPT=df_adapt$power)
+    df_res_power <- melt(df_res_power, id.vars=c("alpha"), variable.name='method', value.name="value")
+    df_res_power$group <- 'Power'
+    
+    df_res_FDP <- data.frame(alpha=alphas, BH=df_BH$FDP, 
+                               Storey=df_storey$FDP, AdaPT=df_adapt$FDP)
+    df_res_FDP <- melt(df_res_FDP, id.vars=c("alpha"), variable.name='method', value.name="value")
+    df_res_FDP$group <- 'FDP'
+    
+    df_res <- rbind(df_res_power, df_res_FDP)
+    
+    ggplot(data=df_res, aes(x=alpha, y=value, group=interaction(method, group), color=method, linetype=group)) + 
+        geom_line() + 
+        scale_y_continuous(
+
+            # Features of the first axis
+            name = "Power",
+
+            # Add a second axis and specify its features
+            sec.axis = sec_axis(~ 1*., name="FDP"),
+            limits = c(0,1)
+        ) +
+        theme(legend.position="bottom") +
+        
+        ggtitle("")
+
 }
