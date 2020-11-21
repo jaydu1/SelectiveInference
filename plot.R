@@ -1,13 +1,14 @@
 library(ggplot2)
 library(reshape2)
+library("grid")
+library("ggplotify")
 
 plot_s_curve <- function(obj, x, pvals,
                            alpha, alpha_BH, alpha_stoery,
                            xlab = "x", xlim = NULL,
                            disp_ymax = 0.3,
                            num_yticks = 3,
-                           rand_seed_perturb = NA,
-                           ...){
+                           rand_seed_perturb = NA){
     
     title <- sprintf("Rejection threshold (alpha=%.02f)", alpha)
     n <- length(pvals)
@@ -33,9 +34,7 @@ plot_s_curve <- function(obj, x, pvals,
     } else {
         xlim <- c(min(x), max(x))
     }
-    
-    par(...)
-    
+
     what_type <- ifelse(pvals < s, 1, ifelse(pvals > 1 - s, 2, 3))
     plot(x, (1:n * disp_ymax) / n, type = "n", pch = ".",
          xaxs = "i", yaxs = "i", ylab = "p-values",
