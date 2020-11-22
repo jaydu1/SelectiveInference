@@ -73,7 +73,8 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
 
             # Features of the first axis
             name = "Power",
-            limits = c(0,1)
+            limits = c(0,1),
+            labels = scales::number_format(accuracy = 0.01)
         ) +
         theme_light() + 
         theme(legend.position = "none") + 
@@ -91,7 +92,8 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
             
             # Features of the first axis
             name = "FDP",
-            limits = c(0,0.4)
+            limits = c(0,0.4),
+            labels = scales::number_format(accuracy = 0.01)
         ) +
         theme_light() + 
         theme(legend.position="bottom") 

@@ -5,7 +5,6 @@ source("utils.R")
 source("algo.R")
 source("plot.R")
 library(shiny)
-library(gridExtra)
 
 # Define UI for app
 ui <- fluidPage(
