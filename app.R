@@ -27,16 +27,11 @@ ui <- fluidPage(
                 ),
                 
                 # Main panel for displaying outputs ----
-                #mainPanel(
-                  #textOutput("selected"),
-                  #plotOutput("p1"),
-                  #plotOutput("p2")
-                #)
-                mainPanel("main panel",
-                          #fluidRow(
-                           # splitLayout(cellWidths = c("50%", "50%"), plotOutput("p1"), plotOutput("p2"))
-                          #)
-                          verticalLayout(plotOutput("p1"), plotOutput("p2"))
+                mainPanel(
+                    verticalLayout(
+                        plotOutput("p1"), 
+                        plotOutput("p2")
+                                         )
                 )
   )
 )

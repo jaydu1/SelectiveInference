@@ -1,7 +1,6 @@
 library(ggplot2)
 library(reshape2)
-library("grid")
-library("ggplotify")
+require(gridExtra)
 
 plot_s_curve <- function(obj, x, pvals,
                            alpha, alpha_BH, alpha_stoery,
@@ -68,28 +67,34 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
     df_res_power <- data.frame(alpha=alphas, AdaPT=df_adapt$power,
                                Storey=df_storey$power, BH=df_BH$power)
     df_res_power <- melt(df_res_power, id.vars=c("alpha"), variable.name='method', value.name="value")
-    df_res_power$group <- 'Power'
-    
-    df_res_FDP <- data.frame(alpha=alphas, AdaPT=df_adapt$FDP, 
-                               Storey=df_storey$FDP, BH=df_BH$FDP)
-    df_res_FDP <- melt(df_res_FDP, id.vars=c("alpha"), variable.name='method', value.name="value")
-    df_res_FDP$group <- 'FDP'
-    
-    df_res <- rbind(df_res_power, df_res_FDP)
-    # df_res$method <- factor(df_res$method, levels=c("AdaPT", "Stoery", "BH"))
-    ggplot(data=df_res, aes(x=alpha, y=value, group=interaction(method, group), color=method, linetype=group)) + 
+    p1 <- ggplot(data=df_res_power, aes(x=alpha, y=value, color=method)) + 
         geom_line() + 
         scale_y_continuous(
 
             # Features of the first axis
             name = "Power",
-
-            # Add a second axis and specify its features
-            sec.axis = sec_axis(~ 1*., name="FDP"),
             limits = c(0,1)
         ) +
-        theme(legend.position="bottom") +
-        
+        theme_light() + 
+        theme(legend.position = "none") + 
+        theme(axis.title.x=element_blank(),
+              axis.text.x=element_blank(),
+              axis.ticks.x=element_blank()) + 
         ggtitle("")
-
+    
+    df_res_FDP <- data.frame(alpha=alphas, AdaPT=df_adapt$FDP, 
+                             Storey=df_storey$FDP, BH=df_BH$FDP)
+    df_res_FDP <- melt(df_res_FDP, id.vars=c("alpha"), variable.name='method', value.name="value")
+    p2 <- ggplot(data=df_res_FDP, aes(x=alpha, y=value, color=method)) + 
+        geom_line() + 
+        scale_y_continuous(
+            
+            # Features of the first axis
+            name = "FDP",
+            limits = c(0,0.4)
+        ) +
+        theme_light() + 
+        theme(legend.position="bottom") 
+        ggtitle("")
+    grid.arrange(p1, p2,heights=c(0.6, 0.4), ncol=1)
 }
