@@ -3,11 +3,12 @@ library(reshape2)
 require(gridExtra)
 
 plot_s_curve <- function(obj, x, pvals,
-                           alpha, alpha_BH, alpha_stoery,
-                           xlab = "x", xlim = NULL,
-                           disp_ymax = 0.3,
-                           num_yticks = 3,
-                           rand_seed_perturb = NA){
+                         alpha, H,
+                         alpha_BH, alpha_stoery,
+                         xlab = "x", xlim = NULL,
+                         disp_ymax = 0.25,
+                         num_yticks = 3,
+                         rand_seed_perturb = NA){
     
     title <- sprintf("Rejection threshold (alpha=%.02f)", alpha)
     n <- length(pvals)
@@ -35,7 +36,9 @@ plot_s_curve <- function(obj, x, pvals,
     }
 
     what_type <- ifelse(pvals < s, 1, ifelse(pvals > 1 - s, 2, 3))
-    plot(x, (1:n * disp_ymax) / n, type = "n", pch = ".",
+    what_pch <- ifelse(H == 0, 1, 2)
+    plot(x, (1:n * disp_ymax) / n, type = "n", 
+         pch = ".",
          xaxs = "i", yaxs = "i", ylab = "p-values",
          xlab = xlab, xlim = xlim,
          col = c("red", "blue", "black")[what_type], yaxt = "n",
@@ -52,10 +55,10 @@ plot_s_curve <- function(obj, x, pvals,
     if(!is.na(rand_seed_perturb)) {
         set.seed(rand_seed_perturb)
         points(x, pvals + 0.001 * rnorm(n),
-               pch = ".",
+               pch = c(".", "+")[what_pch],
                col = c("red", "blue", "black")[what_type])
     }
-    points(x, pvals, pch = ".",
+    points(x, pvals, pch = c(".", "+")[what_pch], cex=c(1,0.75)[what_pch],
            col = c("red", "blue", "black")[what_type])
     abline(a=NULL, b=NULL, h=alpha_BH, v=NULL, col="blue")
     abline(a=NULL, b=NULL, h=alpha_stoery, v=NULL, col="green")
