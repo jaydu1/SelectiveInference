@@ -15,13 +15,14 @@ ui <- fluidPage(
                 # Sidebar panel for inputs ----
                 sidebarPanel(
                   helpText("Create a histogram from normal distribution."),
-                  sliderInput("N", "number of samples:", min = 100, max = 5000, value = 1000),
+                  sliderInput("N", "number of samples:", min = 100, max = 5000, value = 1000, step=100),
                   numericInput("nu1", "nu1", value=2),
                   numericInput("f_param1", "f_param1", value=2), numericInput("f_param2", "f_param2", value=2), 
-                  sliderInput("f_param3", "f_param3", min = 0.0, max = 1.0, value = 0.9), 
-                  sliderInput("f_param4", "f_param4", min = 0.0, max = 1.0, value = 0.1),
+                  sliderInput("f_param3", "f_param3", min = 0.0, max = 1.0, value = 0.9, step=0.05), 
+                  sliderInput("f_param4", "f_param4", min = 0.0, max = 1.0, value = 0.1, step=0.05),
                   sliderInput("rho", "rho:", min = 0, max = 1, value = 0),
                   selectInput("opt", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
+                  sliderInput("sparsity", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
                   sliderInput("alpha", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
                 ),
                 
@@ -43,7 +44,7 @@ server <- function(input, output) {
                               c(input$f_param1, input$f_param2, input$f_param3, input$f_param4))
         
         # create dependence
-        Cov <- cor_mat(sum(data$H==1), input$rho, input$opt)
+        Cov <- cor_mat(sum(data$H==1), input$rho, input$opt, input$sparsity)
         
         # generate p value
         data$z <- rnorm(input$N, data$nu)
