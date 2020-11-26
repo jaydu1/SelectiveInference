@@ -2,6 +2,23 @@ library(Matrix)
 
 f1 <- function(x, parm){ parm[3] * (abs(x-parm[1])<parm[2]) + parm[4]*(abs(x-parm[1])>=parm[2]) }
 
+#parm: beta_0, beta_1 in the model logit(pi) = beta_0 + beta_1*x 
+f2 <- function(x, parm){
+    x <- scale(x)
+    reg <- exp(parm[1]+parm[2]*x)
+    return(reg/(1+reg))
+}
+
+#parm: number of groups
+f3 <- function(x, parm){
+    #divide x into different groups based on the values
+    #ex: x=1:10 becomes: 1,1,1,1,1,2,2,2,2,2
+    group <- cut(x, parm, labels=FALSE)
+    prob <- seq(0,1,length.out = parm+1)
+    res <- sapply(group, function(gp){return(runif(1, min=prob[gp], max=prob[gp+1]))})
+    return(res)
+}
+
 #' Data generating function
 #'
 #' @params N A number of total observations.

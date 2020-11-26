@@ -61,7 +61,7 @@ server <- function(input, output) {
                            mu_formulas = formulas,  nfits = 10, alphas = alphas,
                            verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
         df_adapt <- summary_adapt(adapt, data$pvals, data$H)
-        list(data, df_BH, df_storey, adapt)
+        list(data, df_BH, df_storey, df_adapt, adapt)
     })
   
     # output$selected <- renderText({ paste("You are plotting a histogrm of ", input$n," normal samples with mean ", input$mean," and sd ", input$sd) })
@@ -70,7 +70,7 @@ server <- function(input, output) {
         data = l[[1]]
         df_BH = l[[2]]
         df_storey = l[[3]]
-        adapt = l[[4]]
+        adapt = l[[5]]
         alphas <- seq(0.01, 0.3, 0.01)
         plot_s_curve(adapt, data$x, data$pvals, input$alpha, data$H,
                      df_BH[abs(alphas-input$alpha)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha)<1e-12,'alpha'])
@@ -81,7 +81,8 @@ server <- function(input, output) {
         data = l[[1]]
         df_BH = l[[2]]
         df_storey = l[[3]]
-        adapt = l[[4]]
+        df_adapt = l[[4]]
+        adapt = l[[5]]
         alphas <- seq(0.01, 0.3, 0.01)
         plot_power(alphas, df_BH, df_storey, df_adapt)
     })
