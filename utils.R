@@ -30,7 +30,8 @@ f3 <- function(x, parm){
 #' generate_data(1e4, c(0, 1), c(0,50,0.9,0.1))
 generate_data <- function(N,
                           nu,
-                          f_param # need to check for validity
+                          f_param,
+                          nfun
 ){
     x_i <- seq(-50, 50, length.out = N)
     
@@ -38,7 +39,8 @@ generate_data <- function(N,
     # f_pi_1 <- partial(
     #     switch(f, f1, f2), 
     #     parm = f_param)
-    f_pi_1 <- f1
+    
+    f_pi_1 <- switch(nfun, f1, f2, f3)
     
     pi_1 <- f_pi_1(x_i, parm = f_param)
 

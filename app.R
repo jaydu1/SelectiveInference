@@ -88,7 +88,7 @@ ui <- fluidPage(
              sliderInput("rho_f2", "rho:", min = 0, max = 1, value = 0),
              selectInput("opt_f2", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
              sliderInput("sparsity_f2", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
-             sliderInput("alpha_f2", "alpha:", min = 0.01, max = 0.30, value = 0.2, step=0.01)
+             sliderInput("alpha_f2", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
            ),
            
            # Main panel for displaying outputs ----
@@ -115,7 +115,7 @@ ui <- fluidPage(
             sliderInput("rho_f3", "rho:", min = 0, max = 1, value = 0),
             selectInput("opt_f3", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
             sliderInput("sparsity_f3", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
-            sliderInput("alpha_f3", "alpha:", min = 0.01, max = 0.30, value = 0.2, step=0.01)
+            sliderInput("alpha_f3", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
           ),
           
           # Main panel for displaying outputs ----
@@ -136,7 +136,8 @@ server <- function(input, output) {
     dataInput_f1 <- reactive({
         # generate data
         data <- generate_data(input$N_f1, c(0, input$nu1_f1), 
-                              c(input$f_param1_f1, input$f_param2_f1, input$f_param3_f1, input$f_param4_f1))
+                              c(input$f_param1_f1, input$f_param2_f1, input$f_param3_f1, input$f_param4_f1),
+                              1)
         
         # create dependence
         Cov <- cor_mat(sum(data$H==1), input$rho_f1, input$opt_f1, input$sparsity_f1)
@@ -162,7 +163,8 @@ server <- function(input, output) {
     dataInput_f2 <- reactive({
       # generate data
       data <- generate_data(input$N_f2, c(0, input$nu1_f2), 
-                            c(input$f_param1_f2, input$f_param2_f2, input$f_param3_f2, input$f_param4_f2))
+                            c(input$f_param1_f2, input$f_param2_f2),
+                            2)
       
       # create dependence
       Cov <- cor_mat(sum(data$H==1), input$rho_f2, input$opt_f2, input$sparsity_f2)
@@ -188,7 +190,8 @@ server <- function(input, output) {
     dataInput_f3 <- reactive({
       # generate data
       data <- generate_data(input$N_f3, c(0, input$nu1_f3), 
-                            c(input$f_param1_f3, input$f_param2_f3, input$f_param3_f3, input$f_param4_f3))
+                            c(input$f_param1_f3),
+                            3)
       
       # create dependence
       Cov <- cor_mat(sum(data$H==1), input$rho_f3, input$opt_f3, input$sparsity_f3)
@@ -218,7 +221,6 @@ server <- function(input, output) {
       df_storey = l[[3]]
       adapt = l[[5]]
       alphas <- seq(0.01, 0.3, 0.01)
-      print(input$alpha_f1)
       plot_s_curve(adapt, data$x, data$pvals, input$alpha_f1, data$H,
                    df_BH[abs(alphas-input$alpha_f1)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f1)<1e-12,'alpha'])
     })
