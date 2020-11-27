@@ -72,6 +72,7 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
     df_res_power <- melt(df_res_power, id.vars=c("alpha"), variable.name='method', value.name="value")
     p1 <- ggplot(data=df_res_power, aes(x=alpha, y=value, color=method)) + 
         geom_line() + 
+        geom_point() +
         scale_y_continuous(
 
             # Features of the first axis
@@ -91,6 +92,7 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
     df_res_FDP <- melt(df_res_FDP, id.vars=c("alpha"), variable.name='method', value.name="value")
     p2 <- ggplot(data=df_res_FDP, aes(x=alpha, y=value, color=method)) + 
         geom_line() + 
+        geom_point() +
         scale_y_continuous(
             
             # Features of the first axis

@@ -146,7 +146,7 @@ server <- function(input, output) {
         alphas <- seq(0.01, 0.3, 0.01)
         df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
         df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
-        
+
         formulas <- paste0("ns(x, df = ", 6:7, ")")
         adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
                            mu_formulas = formulas,  nfits = 10, alphas = alphas,
