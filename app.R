@@ -43,7 +43,7 @@ ui <- fluidPage(
                 width=2)),
             
             hr(),
-            p(em("Developed by"),br("Bowei Kang, Jinhong Du, Xinxin Chen"),style="text-align:center; font-family: times")
+            p(em("Developed by"),br("Bowei Kang, Jin-Hong Du, Xinxin Chen"),style="text-align:center; font-family: times")
       ),
   #titlePanel(em("AdaPT Simulations")),
   
