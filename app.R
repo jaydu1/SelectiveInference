@@ -103,13 +103,14 @@ ui <- fluidPage(
           
           # Sidebar panel for inputs ----
           sidebarPanel(
-            sliderInput("N_f3", "number of samples:", min = 100, max = 5000, value = 300, step=100),
-            numericInput("nu1_f3", "nu1", value=2),
-            sliderInput("f_param1_f3", "f_param1", min = 2, max = 10, value = 1, step=1), 
-            sliderInput("rho_f3", "rho:", min = 0, max = 1, value = 0),
-            selectInput("opt_f3", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
-            sliderInput("sparsity_f3", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
-            sliderInput("alpha_f3", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
+              sliderInput("N_f3", "number of samples:", min = 100, max = 5000, value = 300, step=100),
+              numericInput("nu1_f3", "nu1", value=2),
+              sliderInput("f_param1_f3", "f_param1", min = 2, max = 5, value = 3, step=1),
+              sliderInput("f_param2_f3", "f_param2", min = 0.1, max = 0.5, value = 0.3, step=0.1),
+              sliderInput("rho_f3", "rho:", min = 0, max = 1, value = 0),
+              selectInput("opt_f3", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
+              sliderInput("sparsity_f3", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
+              sliderInput("alpha_f3", "alpha:", min = 0.01, max = 0.30, value = 0.1, step=0.01)
           ),
           
           # Main panel for displaying outputs ----
@@ -182,30 +183,30 @@ server <- function(input, output) {
     })
   
     dataInput_f3 <- reactive({
-      # generate data
-      data <- generate_data(input$N_f3, c(0, input$nu1_f3), 
-                            c(input$f_param1_f3),
-                            3)
-      
-      # create dependence
-      Cov <- cor_mat(sum(data$H==1), input$rho_f3, input$opt_f3, input$sparsity_f3)
-      
-      # generate p value
-      data$z <- rnorm(input$N_f3, data$nu)
-      data$z[data$H==1] <- mvrnorm(1, data$nu[data$H==1], Cov)
-      data$pvals <- 1 - pnorm(data$z)
-      
-      # run algorithms
-      alphas <- seq(0.01, 0.3, 0.01)
-      df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
-      df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
-      
-      formulas <- paste0("ns(x, df = ", 3:6, ")")
-      adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
-                         mu_formulas = formulas,  nfits = 10, alphas = alphas,
-                         verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
-      df_adapt <- summary_adapt(adapt, data$pvals, data$H)
-      list(data, df_BH, df_storey, df_adapt, adapt)
+        # generate data
+        data <- generate_data(input$N_f3, c(0, input$nu1_f3), 
+                              c(input$f_param1_f3, input$f_param2_f3),
+                              3)
+        
+        # create dependence
+        Cov <- cor_mat(sum(data$H==1), input$rho_f3, input$opt_f3, input$sparsity_f3)
+        
+        # generate p value
+        data$z <- rnorm(input$N_f3, data$nu)
+        data$z[data$H==1] <- mvrnorm(1, data$nu[data$H==1], Cov)
+        data$pvals <- 1 - pnorm(data$z)
+        
+        # run algorithms
+        alphas <- seq(0.01, 0.3, 0.01)
+        df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
+        df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
+        
+        formulas <- paste0("ns(x, df = ", 3:6, ")")
+        adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
+                           mu_formulas = formulas,  nfits = 10, alphas = alphas,
+                           verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
+        df_adapt <- summary_adapt(adapt, data$pvals, data$H)
+        list(data, df_BH, df_storey, df_adapt, adapt)
     })
     
     output$p1_f1 <- renderPlot({
@@ -262,7 +263,8 @@ server <- function(input, output) {
       adapt = l[[5]]
       alphas <- seq(0.01, 0.3, 0.01)
       plot_s_curve(adapt, data$x, data$pvals, input$alpha_f3, data$H,
-                   df_BH[abs(alphas-input$alpha_f3)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f3)<1e-12,'alpha'])
+                   df_BH[abs(alphas-input$alpha_f3)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f3)<1e-12,'alpha'],
+                   gp=data$group)
     })
     
     output$p2_f3 <- renderPlot({

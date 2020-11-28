@@ -4,7 +4,7 @@ require(gridExtra)
 
 plot_s_curve <- function(obj, x, pvals,
                          alpha, H,
-                         alpha_BH, alpha_stoery,
+                         alpha_BH, alpha_stoery, gp=NULL,
                          xlab = "x", xlim = NULL,
                          disp_ymax = 0.25,
                          num_yticks = 3,
@@ -62,6 +62,13 @@ plot_s_curve <- function(obj, x, pvals,
            col = c("red", "blue", "black")[what_type])
     abline(a=NULL, b=NULL, h=alpha_BH, v=NULL, col="blue")
     abline(a=NULL, b=NULL, h=alpha_stoery, v=NULL, col="green")
+    if(!is.null(gp)){
+        group = gp[x_ord]
+        num_group = length(unique(group))
+        for (i in 1:num_group) {
+            abline(v = max(x[group==i]), lty = 2)
+        }
+    }
     box()
 }
 

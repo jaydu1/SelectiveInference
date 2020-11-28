@@ -9,15 +9,22 @@ f2 <- function(x, parm){
     return(1/(1+reg))
 }
 
-#parm: number of groups
+#parm: number of groups, upper bound of pi_1
 f3 <- function(x, parm){
     #divide x into different groups based on the values
     #ex: x=1:10 becomes: 1,1,1,1,1,2,2,2,2,2
-    group <- cut(x, parm, labels=FALSE)
-    prob <- seq(0,1,length.out = parm+1)
-    res <- sapply(group, function(gp){return(runif(1, min=prob[gp], max=prob[gp+1]))})
-    return(res)
+    group = cut(x, parm[1], labels =FALSE)
+    prob = seq(0.01, parm[2],length.out = 11)
+    gp_idx = sample(10, parm[1])
+    res = sapply(group, 
+                 function(gp){return(runif(1, min=prob[gp_idx[gp]], max=prob[gp_idx[gp]+1]))})
+    pi_1_range = list()
+    for (i in 1:parm[1]) {
+        pi_1_range[[i]] = c(prob[gp_idx[i]], prob[gp_idx[i]+1])
+    }
+    return(list(group = group, pi_1 = res, pi_1_range = pi_1_range))
 }
+
 
 #' Data generating function
 #'
@@ -42,14 +49,21 @@ generate_data <- function(N,
     
     f_pi_1 <- switch(nfun, f1, f2, f3)
     
-    pi_1 <- f_pi_1(x_i, parm = f_param)
-
-    H_i <- rbinom(N, 1, pi_1)
-    
-    nu_i <- rep(nu[1], N)
-    nu_i[H_i==1] <- nu[2]
-    
-    return(list(x=x_i, nu=nu_i, H=H_i))
+    if(nfun<3){
+        pi_1 <- f_pi_1(x_i, parm = f_param)    
+        H_i <- rbinom(N, 1, pi_1)
+        nu_i <- rep(nu[1], N)
+        nu_i[H_i==1] <- nu[2]
+        
+        return(list(x=x_i, nu=nu_i, H=H_i))
+    }else{
+        res <- f_pi_1(x_i, parm = f_param)
+        pi_1 <- res$pi_1
+        H_i <- rbinom(N, 1, pi_1)
+        nu_i <- rep(nu[1], N)
+        nu_i[H_i==1] <- nu[2]
+        return(list(x=order(x_i), nu=nu_i, H=H_i, group=res$group, pi_1_range = res$pi_1_range))
+    }
 }
 
 #' Covariance matrix generating function
