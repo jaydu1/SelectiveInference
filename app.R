@@ -216,8 +216,7 @@ server <- function(input, output) {
       adapt = l[[5]]
       alphas <- seq(0.01, 0.3, 0.01)
       plot_s_curve(adapt, data$x, data$pvals, input$alpha_f1, data$H,
-                   df_BH[abs(alphas-input$alpha_f1)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f1)<1e-12,'alpha'],
-                   disp_ymax =0.5)
+                   df_BH[abs(alphas-input$alpha_f1)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f1)<1e-12,'alpha'])
     })
     
     output$p2_f1 <- renderPlot({
@@ -240,7 +239,8 @@ server <- function(input, output) {
         adapt = l[[5]]
         alphas <- seq(0.01, 0.3, 0.01)
         plot_s_curve(adapt, data$x, data$pvals, input$alpha_f2, data$H,
-                     df_BH[abs(alphas-input$alpha_f2)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f2)<1e-12,'alpha'])
+                     df_BH[abs(alphas-input$alpha_f2)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f2)<1e-12,'alpha'],
+                     disp_ymax =0.5)
     })
   
     output$p2_f2 <- renderPlot({
