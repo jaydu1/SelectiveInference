@@ -146,7 +146,7 @@ server <- function(input, output) {
         df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
         df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
 
-        formulas <- paste0("ns(x, df = ", 6:7, ")")
+        formulas <- paste0("ns(x, df = ", 3:6, ")")
         adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
                            mu_formulas = formulas,  nfits = 10, alphas = alphas,
                            verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
@@ -173,7 +173,7 @@ server <- function(input, output) {
       df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
       df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
       
-      formulas <- paste0("ns(x, df = ", 6:7, ")")
+      formulas <- paste0("ns(x, df = ", 3:6, ")")
       adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
                          mu_formulas = formulas,  nfits = 10, alphas = alphas,
                          verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
@@ -200,7 +200,7 @@ server <- function(input, output) {
       df_BH <- summary_BH(data$pvals, data$H, alphas = alphas)
       df_storey <- summary_storey(data$pvals, data$H, alphas = alphas)
       
-      formulas <- paste0("ns(x, df = ", 6:7, ")")
+      formulas <- paste0("ns(x, df = ", 3:6, ")")
       adapt <- adapt_glm(x = data.frame(x = data$x), pvals = data$pvals, pi_formulas = formulas,
                          mu_formulas = formulas,  nfits = 10, alphas = alphas,
                          verbose=list(print = FALSE, fit = FALSE, ms = FALSE))
