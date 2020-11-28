@@ -6,7 +6,7 @@ f1 <- function(x, parm){ parm[3] * (abs(x-parm[1])<parm[2]) + parm[4]*(abs(x-par
 f2 <- function(x, parm){
     x <- scale(x)
     reg <- exp(parm[1]+parm[2]*x)
-    return(reg/(1+reg))
+    return(1/(1+reg))
 }
 
 #parm: number of groups
@@ -62,7 +62,8 @@ generate_data <- function(N,
 #' @export
 #' @examples
 #' cor_mat(15,0.5,'cs', sparsity=0.8)
-cor_mat <- function(N, rho=0, opt = c("cs","ar1"), sparsity=1.0){
+cor_mat <- function(N, rho=0, opt = c("cs","ar1"), sparsity=0.0){
+    if(sparsity>0.9){rho=0}
     n_dense = round((1-sparsity)*N,0)
     order = sample(N)
     if (match.arg(opt)=='cs' ) {

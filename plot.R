@@ -58,7 +58,7 @@ plot_s_curve <- function(obj, x, pvals,
                pch = c(".", "+")[what_pch],
                col = c("red", "blue", "black")[what_type])
     }
-    points(x, pvals, pch = c(".", "+")[what_pch], cex=c(1,0.75)[what_pch],
+    points(x, pvals, pch = c(20,3)[what_pch], cex=c(0.5,0.5)[what_pch],
            col = c("red", "blue", "black")[what_type])
     abline(a=NULL, b=NULL, h=alpha_BH, v=NULL, col="blue")
     abline(a=NULL, b=NULL, h=alpha_stoery, v=NULL, col="green")
@@ -74,8 +74,6 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
         geom_line() + 
         geom_point() +
         scale_y_continuous(
-
-            # Features of the first axis
             name = "Power",
             limits = c(0,1),
             labels = scales::number_format(accuracy = 0.01)
@@ -94,12 +92,9 @@ plot_power <- function(alphas, df_BH, df_storey, df_adapt, ...){
         geom_line() + 
         geom_point() +
         scale_y_continuous(
-            
-            # Features of the first axis
-            name = "FDP",
-            limits = c(0,0.4),
             labels = scales::number_format(accuracy = 0.01)
         ) +
+        ylab("FDP") +
         theme_light() + 
         theme(legend.position="bottom") 
         ggtitle("")

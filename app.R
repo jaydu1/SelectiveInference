@@ -51,7 +51,6 @@ ui <- fluidPage(
       sidebarLayout(position = 'left',
             # Sidebar panel for inputs ----
             sidebarPanel(
-              helpText("Create a histogram from normal distribution."),
               sliderInput("N_f1", "number of samples:", min = 100, max = 5000, value = 200, step=100),
               numericInput("nu1_f1", "nu1", value=2),
               numericInput("f_param1_f1", "f_param1", value=2), 
@@ -82,7 +81,7 @@ ui <- fluidPage(
              sliderInput("N_f2", "number of samples:", min = 100, max = 5000, value = 300, step=100),
              numericInput("nu1_f2", "nu1", value=2),
              numericInput("f_param1_f2", "f_param1", value=-2), 
-             numericInput("f_param2_f2", "f_param2", value=-2), 
+             numericInput("f_param2_f2", "f_param2", value=2, min=0), 
              sliderInput("rho_f2", "rho:", min = 0, max = 1, value = 0),
              selectInput("opt_f2", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
              sliderInput("sparsity_f2", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
@@ -217,7 +216,8 @@ server <- function(input, output) {
       adapt = l[[5]]
       alphas <- seq(0.01, 0.3, 0.01)
       plot_s_curve(adapt, data$x, data$pvals, input$alpha_f1, data$H,
-                   df_BH[abs(alphas-input$alpha_f1)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f1)<1e-12,'alpha'])
+                   df_BH[abs(alphas-input$alpha_f1)<1e-12,'alpha'], df_storey[abs(alphas-input$alpha_f1)<1e-12,'alpha'],
+                   disp_ymax =0.5)
     })
     
     output$p2_f1 <- renderPlot({
