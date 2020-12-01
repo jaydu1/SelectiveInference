@@ -76,22 +76,25 @@ generate_data <- function(N,
 #' @export
 #' @examples
 #' cor_mat(15,0.5,'cs', sparsity=0.8)
-cor_mat <- function(N, rho=0, opt = c("cs","ar1"), sparsity=0.0){
-    if(sparsity>0.9){rho=0}
-    n_dense = round((1-sparsity)*N,0)
-    order = sample(N)
-    if (match.arg(opt)=='cs' ) {
-        Sigma = matrix(rho, n_dense, n_dense);
-        diag(Sigma) = 1
+cor_mat = function(N, rho=0, opt = c("cs","ar1"), sparsity=1.0){
+    if (sparsity==1){
+        Sigma = diag(1,N,N) 
+    } else {
+        n_dense = round((1-sparsity)*N,0)
+        order = sample(N)
+        
+        if (match.arg(opt)=='cs' ) {
+            Sigma = matrix(rho, n_dense, n_dense);
+            diag(Sigma) = 1
+        }
+        if (match.arg(opt)=='ar1') {
+            exponent = abs(matrix(1:n_dense-1, n_dense, n_dense, byrow=T) - (1:n_dense-1)); 
+            Sigma = rho^exponent
+        }
         Sigma = bdiag(Diagonal(N-n_dense), Sigma)
         Sigma = Sigma[order,order]
     }
-    if (match.arg(opt)=='ar1') {
-        exponent = abs(matrix(1:n_dense-1, n_dense, n_dense, byrow=T) - (1:n_dense-1)); 
-        Sigma = rho^exponent
-        Sigma = bdiag(Diagonal(N-n_dense), Sigma)
-        Sigma = Sigma[order,order]
-    }
+    Sigma = Matrix(Sigma, sparse = TRUE) 
     return(Sigma)
 }
 
