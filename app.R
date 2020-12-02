@@ -47,19 +47,19 @@ ui <- fluidPage(
       ),
   #titlePanel(em("AdaPT Simulations")),
   
-  tabPanel('Low Total Variation',
+  tabPanel('Low Total Variation Setting',
       sidebarLayout(position = 'left',
             # Sidebar panel for inputs ----
             sidebarPanel(
               sliderInput("N_f1", "number of samples:", min = 100, max = 5000, value = 200, step=100),
               numericInput("nu1_f1", "nu1", value=2),
-              numericInput("f_param1_f1", "f_param1", value=2), 
-              numericInput("f_param2_f1", "f_param2", value=2), 
-              sliderInput("f_param3_f1", "f_param3", min = 0.0, max = 1.0, value = 0.9, step=0.05), 
-              sliderInput("f_param4_f1", "f_param4", min = 0.0, max = 1.0, value = 0.1, step=0.05),
+              numericInput("f_param1_f1", "theta_11", value=2), 
+              numericInput("f_param2_f1", "theta_12", value=2), 
+              sliderInput("f_param3_f1", "theta_13", min = 0.0, max = 1.0, value = 0.9, step=0.05), 
+              sliderInput("f_param4_f1", "theta_14", min = 0.0, max = 1.0, value = 0.1, step=0.05),
               sliderInput("rho_f1", "rho:", min = 0, max = 1, value = 0),
               selectInput("opt_f1", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
-              sliderInput("sparsity_f1", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
+              sliderInput("sparsity_f1", "sparsity:", min = 0, max = 1, value = 1.0, step=0.1),
               sliderInput("alpha_f1", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
             ),
             
@@ -73,18 +73,18 @@ ui <- fluidPage(
         )
       ),
   
-  tabPanel('Ordered structure',
+  tabPanel('Ordered Setting',
       sidebarLayout(position = 'left',
                    
            # Sidebar panel for inputs ----
            sidebarPanel(
              sliderInput("N_f2", "number of samples:", min = 100, max = 5000, value = 300, step=100),
              numericInput("nu1_f2", "nu1", value=2),
-             numericInput("f_param1_f2", "f_param1", value=-2), 
-             numericInput("f_param2_f2", "f_param2", value=2, min=0), 
+             numericInput("f_param1_f2", "theta_21", value=-2), 
+             numericInput("f_param2_f2", "theta_22", value=2, min=0), 
              sliderInput("rho_f2", "rho:", min = 0, max = 1, value = 0),
              selectInput("opt_f2", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
-             sliderInput("sparsity_f2", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
+             sliderInput("sparsity_f2", "sparsity:", min = 0, max = 1, value = 1.0, step=0.1),
              sliderInput("alpha_f2", "alpha:", min = 0.01, max = 0.30, value = 0.05, step=0.01)
            ),
            
@@ -98,18 +98,18 @@ ui <- fluidPage(
     )
     ),
   
- tabPanel('Group structure',
+ tabPanel('Group Setting',
      sidebarLayout(position = 'left',
           
           # Sidebar panel for inputs ----
           sidebarPanel(
-              sliderInput("N_f3", "number of samples:", min = 100, max = 5000, value = 300, step=100),
+              sliderInput("N_f3", "number of samples:", min = 100, max = 5000, value = 1000, step=100),
               numericInput("nu1_f3", "nu1", value=2),
-              sliderInput("f_param1_f3", "f_param1", min = 2, max = 5, value = 3, step=1),
-              sliderInput("f_param2_f3", "f_param2", min = 0.1, max = 0.5, value = 0.3, step=0.1),
+              sliderInput("f_param1_f3", "theta_31", min = 2, max = 5, value = 3, step=1),
+              sliderInput("f_param2_f3", "theta_32", min = 0.1, max = 0.5, value = 0.3, step=0.1),
               sliderInput("rho_f3", "rho:", min = 0, max = 1, value = 0),
               selectInput("opt_f3", "cov:", choices = list("AR(1)" = 'ar1', "CS" = 'cs'), selected = 1),
-              sliderInput("sparsity_f3", "sparsity:", min = 0, max = 1, value = 0.0, step=0.1),
+              sliderInput("sparsity_f3", "sparsity:", min = 0, max = 1, value = 1.0, step=0.1),
               sliderInput("alpha_f3", "alpha:", min = 0.01, max = 0.30, value = 0.1, step=0.01)
           ),
           

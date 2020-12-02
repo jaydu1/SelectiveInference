@@ -14,7 +14,7 @@ f3 <- function(x, parm){
     #divide x into different groups based on the values
     #ex: x=1:10 becomes: 1,1,1,1,1,2,2,2,2,2
     group = cut(x, parm[1], labels =FALSE)
-    prob = seq(0.01, parm[2],length.out = 11)
+    prob = seq(0, parm[2],length.out = 11)
     gp_idx = sample(10, parm[1])
     res = sapply(group, 
                  function(gp){return(runif(1, min=prob[gp_idx[gp]], max=prob[gp_idx[gp]+1]))})
@@ -24,7 +24,6 @@ f3 <- function(x, parm){
     }
     return(list(group = group, pi_1 = res, pi_1_range = pi_1_range))
 }
-
 
 #' Data generating function
 #'
