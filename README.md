@@ -1,6 +1,8 @@
 # AdaPT Simulation
 Course project for STAT 41520 Topics in Selective Inference.
 
+Group Members: Bowei Kang, Jinhong Du, Xinxin Chen.
+
 ![Interface](https://raw.githubusercontent.com/jaydu1/SelectiveInference/main/img/app.png)
 
 
