@@ -9,42 +9,43 @@ library(shiny)
 # Define UI for app
 ui <- fluidPage(
   navbarPage("AdaPT simulation",
-      tabPanel("home",
-            fluidRow(
-              column(
-                
-              br(),
-              p("We consider the problem of multiple hypothesis testing with generic side information: 
-              for each hypothesis Hi we observe both a p-value pi and some predictor xi encoding contextual in- formation about the hypothesis. 
-              For large-scale problems, adaptively focusing power on the more promising hypotheses (those more likely to yield discoveries) 
-              can lead to much more powerful multiple testing procedures. We propose a general iterative framework for this problem, 
-              called the Adaptive p-value Thresholding (AdaPT) procedure, which adaptively estimates a Bayes-optimal p-value rejection threshold and 
-              controls the false discovery rate (FDR) in finite samples.",
-              style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
-              br(),
-                
-              p("At each iteration of the procedure, the analyst proposes a rejection threshold and observes partially cen- sored p-values, 
-              estimates the false discovery proportion (FDP) below the threshold, and proposes another threshold, 
-              until the estimated FDP is below α. Our procedure is adaptive in an unusu- ally strong sense, permitting the analyst 
-              to use any statistical or machine learning method she chooses to estimate the optimal threshold, 
-              and to switch between different models at each itera- tion as information accrues.",
-              style="text-align:justify;color:black;background-color:papayawhip;padding:15px;border-radius:10px"),
+     tabPanel("home",
+              fluidRow(
+                  column(
+                      
+                      br(),
+                      p("Adaptive p-value Thresholding (AdaPT) is a procedure proposed to deal with the problem of multiple hypothesis testing 
+                        with generic side information. 
+                        It adaptively estimates a Bayes-optimal p-value rejection threshold and 
+                        controls the false discovery rate (FDR) in finite samples.",
+                        style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+                      br(),
+                      
+                      p("In the original paper, FDR control guarantee and other finite properties were discussed under independence assumption.
+                        We attempt to generalize this to create dependent p-values and explore how the AdaPT method
+                        performs in terms of power and false discovery rate (FDR). More specifically, 
+                        we check different correlation structures of the Z statistics for nonnull hypothseses by simulation study, including 
+                        low total variation, ordered and group structure.
+                        Please navigate to the subpages for more details.
+                        ",
+                        style="text-align:justify;color:black;background-color:papayawhip;padding:15px;border-radius:10px"),
+                      
+                      width=8),
+                  
+                  column(
+                      br(),
+                      br(),
+                      p("For more information please check Lihua Li and William Fithian's paper: ",
+                        em("AdaPT: An interactive procedure for multiple testing with side information"),
+                        br(),
+                        a(href="https://arxiv.org/abs/1609.06035", "Here",target="_blank"),
+                        style="text-align:center;color:black"),
+                      
+                      width=4)),
               
-              width=8),
-              
-              column(
-                br(),
-                br(),
-                p("For more information please check the",em("Lihua Li and William Fithian's paper"),"page clicking",
-                br(),
-                a(href="https://arxiv.org/abs/1609.06035", "Here",target="_blank"),
-                style="text-align:center;color:black"),
-                
-                width=2)),
-            
-            hr(),
-            p(em("Developed by"),br("Bowei Kang, Jin-Hong Du, Xinxin Chen"),style="text-align:center; font-family: times")
-      ),
+              hr(),
+              p(em("Developed by"),br("Bowei Kang, Jin-Hong Du, Xinxin Chen"),style="text-align:center; font-family: times")
+     ),
   #titlePanel(em("AdaPT Simulations")),
   
   tabPanel('Low Total Variation Setting',
